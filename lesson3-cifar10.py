@@ -116,4 +116,33 @@ for epoch in range(2):# loop over the dataset multiple times
 
 print('Finished Training')
 
+#save our trained model
+PATH = './cifar_net_GPU.pth'
+#torch.save(net.state_dict(), PATH)
 
+#net.load_state_dict(torch.load(PATH))
+
+# 测试步骤开始
+net.eval()
+# prepare to count predictions for each class
+correct_pred = {classname: 0 for classname in classes}
+total_pred = {classname: 0 for classname in classes}
+# again no gradients needed
+with torch.no_grad():
+    for data in testloader:
+        images, labels = data[0].to(device), data[1].to(device)
+        outputs = net(images)
+        _, predictions = torch.max(outputs, 1)
+        # collect the correct predictions for each class
+        for label, prediction in zip(labels, predictions):
+            if label == prediction:
+                correct_pred[classes[label]] += 1
+            total_pred[classes[label]] += 1
+
+# print accuracy for each class
+for classname, correct_count in correct_pred.items():
+    accuracy = 100 * float(correct_count) / total_pred[classname]
+    print("Accuracy for class {:5s} is: {:.1f} %".format(classname,
+                                                   accuracy))
+
+torch.save(net.state_dict(), PATH)
