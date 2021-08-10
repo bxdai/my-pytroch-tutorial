@@ -1,3 +1,4 @@
+#WARM-UP: NUMPY
 #热身 numpy
 #%%
 #---三阶多项式，经过训练以通过最小化平方欧几里得距离来预测从 -pi 到 pi 的 y=sin(x)。
@@ -49,6 +50,7 @@ for t in range(2000):
 print(f'Result: y = {a} + {b} x + {c} x^2 + {d} x^3')
 
 #%%
+#PYTORCH: TENSORS
 import torch
 import math
 dtype = torch.float
@@ -151,6 +153,7 @@ for t in range(2000):
 
 print(f'Result: y = {a.item()} + {b.item()} x + {c.item()} x^2 + {d.item()} x^3')
 # %%
+#PYTORCH: DEFINING NEW AUTOGRAD FUNCTIONS
 #自己定义一个自动推导函数
 import torch
 import math
@@ -231,7 +234,7 @@ print(f'Result: y = {a.item()} + {b.item()} * P3({c.item()} + {d.item()} x)')
 
 
 # %%
-#protch nn
+#PYTORCH: NN
 import torch
 import torch.nn
 import math
@@ -275,4 +278,40 @@ linear_layer = model[0]
 print(f"Result: y = {linear_layer.bias.item()} + {linear_layer.weight[:, 0].item()} x + {linear_layer.weight[:, 1].item()} x^2 + {linear_layer.weight[:, 2].item()} x^3")
 
 
+# %%
+#PYTORCH: OPTIM
+import torch
+import math
+
+x= torch.linspace(-math.pi,math.pi,2000)
+y = torch.sin(x)
+
+P = torch.tensor([1,2,3])
+xx = x.unsqueeze(-1).pow(P)
+print(xx)
+
+model = torch.nn.Sequential(
+    torch.nn.Linear(3,1),
+    torch.nn.Flatten(0,1)
+)
+
+loss_fn = torch.nn.MSELoss(reduce='sum')
+
+learning_rate=1e-3
+optimizer = torch.optim.RMSprop(model.parameters(), lr= learning_rate)
+
+for t in range(2000):
+
+    y_pred = model(xx)
+    loss = loss_fn(y_pred,y)
+    if t % 100 == 99:
+        print(t,loss.item())
+
+    optimizer.zero_grad()
+
+    loss.backward()
+
+    optimizer.step()
+linear_layer = model[0]
+print(f'Result: y = {linear_layer.bias.item()} + {linear_layer.weight[:, 0].item()} x + {linear_layer.weight[:, 1].item()} x^2 + {linear_layer.weight[:, 2].item()} x^3')
 # %%
