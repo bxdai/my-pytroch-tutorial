@@ -7,6 +7,7 @@ from torch.functional import Tensor
 #Tensor Initialization
 #1.直接从data创建，数据类型会被自动推导
 data =[[1,2],[3,4]]
+print(f"data type {type(data)}")
 x_data=torch.tensor(data)
 #print(x_data)
 

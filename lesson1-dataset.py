@@ -1,6 +1,7 @@
 import torch
 from torch.utils.data import Dataset
 from torchvision import datasets
+import torchvision
 from torchvision.transforms import ToTensor
 import matplotlib.pyplot as plt
 #from torch.utils.tensorboard import SummaryWriter
@@ -42,3 +43,4 @@ for i in range(1, cols * rows + 1):
     plt.axis("off")
     plt.imshow(img.squeeze(), cmap="gray")
 plt.show()
+
