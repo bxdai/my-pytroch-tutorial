@@ -181,7 +181,7 @@ class ScaledDotProductAttention(nn.Module):
         """
         scores = torch.matmul(Q, K.transpose(-1, -2)) / \
             np.sqrt(d_k)  # scores : [batch_size, n_heads, len_q, len_k]
-        # mask矩阵填充scores（用-1e9填充scores中与attn_mask中值为1位置相对应的元素）
+        # mask矩阵填充scores（用-1e9填充scores中与attn_mask中值为True位置相对应的元素）
         # Fills elements of self tensor with value where mask is True.
         scores.masked_fill_(attn_mask, -1e9)
 
@@ -331,7 +331,7 @@ class Encoder(nn.Module):
         enc_inputs: [batch_size, src_len]
         """
         enc_outputs = self.src_emb(
-            enc_inputs)  # [batch_size, src_len, d_model]
+            enc_inputs)  # [batch_size, src_len, d_model]=[2,8,512]
         enc_outputs = self.pos_emb(enc_outputs.transpose(0, 1)).transpose(
             0, 1)  # [batch_size, src_len, d_model]
         # Encoder输入序列的pad mask矩阵
@@ -432,9 +432,9 @@ optimizer = optim.SGD(model.parameters(), lr=1e-3,
 for epoch in range(epochs):
     for enc_inputs, dec_inputs, dec_outputs in loader:
         """
-        enc_inputs: [batch_size, src_len]
-        dec_inputs: [batch_size, tgt_len]
-        dec_outputs: [batch_size, tgt_len]
+        enc_inputs: [batch_size, src_len]=[2,8]
+        dec_inputs: [batch_size, tgt_len]=[2,7]
+        dec_outputs: [batch_size, tgt_len]=[2,7]
         """
         enc_inputs, dec_inputs, dec_outputs = enc_inputs.to(
             device), dec_inputs.to(device), dec_outputs.to(device)

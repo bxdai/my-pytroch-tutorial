@@ -26,3 +26,20 @@ x2 = F.conv2d(x,kernel,stride=1)
 # for epoch in range(10):
 #      print("-" * 10)
 #      print(f"epoch {epoch + 1}/{10}")
+
+
+#%%
+import torch
+a = torch.randint(0, 4, (2, 4, 4))
+b = torch.randint(0, 4, (2, 4, 4))
+c = torch.max(a, b)
+print(a)
+print(a.argwhere())
+print(c.shape)
+print(c)
+# %%
+import numpy as np  
+a  = np.array([[0,1,0,0],[1,0,0,0],[0,0,0,1]])
+print('np.argmax(a, axis=1): {0}'.format(np.argmax(a, axis=1)))
+
+# %%
