@@ -126,6 +126,9 @@ class PositionalEncoding(nn.Module):
         pe[:, 0::2] = torch.sin(position * div_term)
         pe[:, 1::2] = torch.cos(position * div_term)
         pe = pe.unsqueeze(0).transpose(0, 1)
+        #PyTorch中定义模型时，有时候会遇到self.register_buffer(‘name’, Tensor)的操作，该方法的作用是定义一组参数，
+        # 该组参数的特别之处在于：模型训练时不会更新（即调用 optimizer.step() 后该组参数不会变化，只可人为地改变它们的值），
+        # 但是保存模型时，该组参数又作为模型参数不可或缺的一部分被保存。
         self.register_buffer('pe', pe)
 
     def forward(self, x):
